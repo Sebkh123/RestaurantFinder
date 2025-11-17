@@ -1,4 +1,4 @@
-package com.example.restaurantfinder.Dtomodel;
+package com.example.restaurantfinder.dtomodel;
 
 import lombok.*;
 
@@ -17,7 +17,7 @@ public class RestaurantDto {
     private final double lat;
     private final double lng;
     private final Integer priceLevel;
-    private final String postnummer;
+    private final String postNummer;
 
 
     public RestaurantDto(String name, String address, double rating, double lat, double lng, Integer priceLevel, String postnummer) {
@@ -27,7 +27,7 @@ public class RestaurantDto {
         this.lat = lat;
         this.lng = lng;
         this.priceLevel = priceLevel;
-        this.postnummer = postnummer;
+        this.postNummer = postnummer;
     }
 }
 

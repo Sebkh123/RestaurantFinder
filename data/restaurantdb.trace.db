@@ -435,3 +435,39 @@ select distinct postnummer from restaurants [42122-232]
 2025-11-14 16:40:25.639539+01:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RESTAURANTS" not found (this database is empty); SQL statement:
 select re1_0.id from restaurants re1_0 where re1_0.place_id=? fetch first ? rows only [42104-232]
+2025-11-17 11:37:36.359810+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select post_nummer form [*]restaurants"; SQL statement:
+select post_nummer form restaurants [42000-232]
+2025-11-17 11:47:20.634262+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RESTAURANT" not found; SQL statement:
+SELECT COUNT(*) FROM RESTAURANT WHERE post_nummer='2400' [42102-232]
+2025-11-17 11:47:24.317549+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RESTAURANT" not found; SQL statement:
+SELECT COUNT(*) FROM RESTAURANT WHERE post_nummer='2400' [42102-232]
+2025-11-17 11:59:36.680450+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where[*]= ""POST_NUMMER"""; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where= "POST_NUMMER" [42001-232]
+2025-11-17 12:00:05.752495+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where[*]= ""post_nummer"""; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where= "post_nummer" [42001-232]
+2025-11-17 12:00:10.588306+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where[*]= ""postnummer"""; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where= "postnummer" [42001-232]
+2025-11-17 12:00:14.961828+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where[*]= ""postNummer"""; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where= "postNummer" [42001-232]
+2025-11-17 12:00:19.470148+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where[*]= ""PostNummer"""; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where= "PostNummer" [42001-232]
+2025-11-17 12:16:22.876654+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RESTAURANTS" not found (this database is empty); SQL statement:
+select * from restaurants [42104-232]
+2025-11-17 12:16:39.127001+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RESTAURANTS" not found (this database is empty); SQL statement:
+select re1_0.id from restaurants re1_0 where re1_0.place_id=? fetch first ? rows only [42104-232]
+2025-11-17 12:32:54.045817+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where [*]= ""2100"""; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where = "2100" [42001-232]
+2025-11-17 12:33:19.518203+01:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select * from restaurants where [*]= '2100'"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+select * from restaurants where = '2100' [42001-232]

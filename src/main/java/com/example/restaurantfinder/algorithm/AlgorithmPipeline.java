@@ -1,6 +1,6 @@
 package com.example.restaurantfinder.algorithm;
 
-import com.example.restaurantfinder.Dtomodel.RestaurantDto;
+import com.example.restaurantfinder.dtomodel.RestaurantDto;
 
 import java.util.*;
 

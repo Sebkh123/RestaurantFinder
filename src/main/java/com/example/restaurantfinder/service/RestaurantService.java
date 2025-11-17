@@ -1,6 +1,6 @@
 package com.example.restaurantfinder.service;
 
-import com.example.restaurantfinder.Dtomodel.RestaurantDto;
+import com.example.restaurantfinder.dtomodel.RestaurantDto;
 import com.example.restaurantfinder.algorithm.AlgorithmPipeline;
 import com.example.restaurantfinder.entity.RestaurantEntity;
 import com.example.restaurantfinder.repo.RestaurantRepo;
@@ -189,9 +189,31 @@ public class RestaurantService {
             Double lng,
             Integer k
     ) {
+
+
+
+
+        method= method.toLowerCase().trim();
+        postNummer = postNummer.toLowerCase().trim();
         List<RestaurantDto> restaurants = getRestaurantsByPostNummer(postNummer);
 
-        switch (method.toLowerCase()) {
+        if ((method.equals("distance") || method.equals("weighted") || method.equals("knn"))
+                && (lat == null || lng == null)) {
+            throw new IllegalArgumentException("lat and lng are required for method: " + method);
+        }
+
+
+        if(restaurants.isEmpty()){
+          return  fetchAndSaveRestaurants(postNummer);
+
+        }
+
+        System.out.println("Sort method='" + method + "', postNummer='" + postNummer + "'");
+        System.out.println("Restaurants loaded for sorting: " + restaurants.size());
+
+
+
+        switch (method) {
 
             case "distance":
                 return AlgorithmPipeline.MergeSort.sort(

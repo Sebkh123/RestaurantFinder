@@ -1,7 +1,7 @@
 package com.example.restaurantfinder.controller;
 
 
-import com.example.restaurantfinder.Dtomodel.RestaurantDto;
+import com.example.restaurantfinder.dtomodel.RestaurantDto;
 import com.example.restaurantfinder.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +39,26 @@ public class RestaurantController {
     }
 
 
+//    @GetMapping("/sort")
+//    public List<RestaurantDto> sortRestaurants(@RequestParam String postNummer, @RequestParam String method, @RequestParam(required = false) Double lat, @RequestParam(required = false) Double lng, @RequestParam(required = false) Integer k){
+//
+//
+//        return restaurantService.sortRestaurants(postNummer, method, lat, lng, k);
+//    }
+
+    // Sort already-saved restaurants
+    @GetMapping("/restaurants/sort")
+    public List<RestaurantDto> sortRestaurants(
+            @RequestParam String postNummer,
+            @RequestParam String method,
+            @RequestParam(required = false) Double lat,
+            @RequestParam(required = false) Double lng,
+            @RequestParam(required = false) Integer k
+    ) {
+        return restaurantService.sortRestaurants(postNummer, method, lat, lng, k);
+
+
+    }
 
 /*
 
