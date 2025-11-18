@@ -26,6 +26,8 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
+
+    // Retrieve all saved restaurants
     @GetMapping("/getAll")
     public List<RestaurantDto> getAll() {
         return restaurantService.getAllRestaurants();
@@ -39,12 +41,6 @@ public class RestaurantController {
     }
 
 
-//    @GetMapping("/sort")
-//    public List<RestaurantDto> sortRestaurants(@RequestParam String postNummer, @RequestParam String method, @RequestParam(required = false) Double lat, @RequestParam(required = false) Double lng, @RequestParam(required = false) Integer k){
-//
-//
-//        return restaurantService.sortRestaurants(postNummer, method, lat, lng, k);
-//    }
 
     // Sort already-saved restaurants
     @GetMapping("/restaurants/sort")
@@ -60,19 +56,6 @@ public class RestaurantController {
 
     }
 
-/*
-
-
-Right now your /getAll returns the entire DB — bad if you scale.
-
-Add:
-
-GET /restaurants?page=0&size=20
-
-GET /restaurants/filter?postNummer=2200&page=0&size=20
-
-Use Spring’s Pageable.
- */
 
 
 

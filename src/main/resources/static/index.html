@@ -4,17 +4,45 @@
     <meta charset="UTF-8">
     <title>Restaurant Finder</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 <body>
 <h1>🍽️ Restaurant Finder</h1>
+<div class="hero-bg"></div>
+
 
 <div class="search-box">
-    <input id="postNummerInput" type="text" placeholder="Enter a valid postnummer (e.g. 2000, 2100)" />
-    <button id="searchBtn">Search</button>
+
+<!--    combined bar: input + sort + search -->
+    <div class="search-bar">
+        <input id="postNummerInput" type="text"
+               placeholder="Enter a valid postnummer (e.g. 2000, 2100)" />
+
+        <select id="sortSelect">
+            <option value="rating">Rating (High → Low)</option>
+            <option value="price">Price level (Low → High)</option>
+            <option value="distance">Distance (Near → Far)</option>
+            <option value="weighted">Weighted Score</option>
+        </select>
+
+        <button id="searchBtn">Search</button>
+    </div>
+
+
+    <button id="geoBtn">📍 Use My Location</button>
 </div>
+
+<div id="bigMap"></div>
 
 <div id="results"></div>
 
+
 <script src="/js/script.js"></script>
+
+<script src="/js/script.js"></script>
+
+
 </body>
 </html>

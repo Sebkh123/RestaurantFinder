@@ -25,7 +25,7 @@ public class RestaurantService {
 
     private static final String API_KEY = System.getenv("GOOGLE_API_KEY");
 
-//    private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
+
     private static final String GEOCODE_URL =  "https://maps.googleapis.com/maps/api/geocode/json";
 
 
