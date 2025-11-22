@@ -44,16 +44,23 @@ public class RestaurantController {
 
     // Sort already-saved restaurants
     @GetMapping("/restaurants/sort")
-    public List<RestaurantDto> sortRestaurants(
+    public ResponseEntity<?> sortRestaurants(
             @RequestParam String postNummer,
             @RequestParam String method,
             @RequestParam(required = false) Double lat,
             @RequestParam(required = false) Double lng,
             @RequestParam(required = false) Integer k
     ) {
-        return restaurantService.sortRestaurants(postNummer, method, lat, lng, k);
-
-
+        try {
+            List<RestaurantDto> restaurants = restaurantService.sortRestaurants(postNummer, method, lat, lng, k);
+            return ResponseEntity.ok(restaurants);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error in sortRestaurants: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching restaurants: " + e.getMessage());
+        }
     }
 
 

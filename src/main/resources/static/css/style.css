@@ -1,30 +1,45 @@
 /* ----------------------------
+   TYPOGRAPHY - Import Modern Font
+----------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ----------------------------
    GLOBAL LAYOUT
 ----------------------------- */
 
 body {
     background: linear-gradient(135deg, #e7faff 0%, #ffffff 60%);
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     max-width: 900px;
     margin: auto;
     padding: 20px;
+    line-height: 1.6;
 }
 
 
 h1 {
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
+    margin-bottom: 40px;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #1a1a1a;
 }
 
 .hero-bg {
     width: 100%;
-    height: 220px;
+    height: 240px;
     background-image: url('/images/img.png');
     background-size: cover;
     background-position: center;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.hero-bg:hover {
+    transform: scale(1.01);
 }
 
 
@@ -38,8 +53,8 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 32px;
 }
 
 /* Combined bar: input + dropdown + search button */
@@ -47,57 +62,95 @@ h1 {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     background: #ffffff;
-    padding: 8px 12px;
+    padding: 10px 16px;
     border-radius: 999px;            /* pill shape */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
+
+.search-bar:focus-within {
+    box-shadow: 0 6px 24px rgba(0,123,255,0.15);
+    transform: translateY(-2px);
 }
 
 /* Postnummer input */
 #postNummerInput {
-    padding: 8px 10px;
-    width: 220px;
+    padding: 10px 12px;
+    width: 240px;
     border-radius: 999px;
-    border: none;
+    border: 2px solid transparent;
     font-size: 15px;
+    font-weight: 400;
     outline: none;
     background: transparent;
+    transition: all 0.3s ease;
+}
+
+#postNummerInput::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+#postNummerInput:focus {
+    border-color: #007bff;
 }
 
 /* Sort dropdown inside bar */
 #sortSelect {
-    padding: 8px 10px;
+    padding: 10px 12px;
     border-radius: 999px;
     border: none;
     font-size: 14px;
+    font-weight: 500;
     background: #f3f4f6;
     color: #333;
     cursor: pointer;
-
-
     appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
     background-repeat: no-repeat;
-    background-position: right 8px center;
+    background-position: right 10px center;
     background-size: 14px;
-    padding-right: 26px; /* space for arrow */
+    padding-right: 32px;
+    transition: all 0.2s ease;
+}
+
+#sortSelect:hover {
+    background-color: #e5e7eb;
+}
+
+#sortSelect:focus {
+    outline: none;
+    background-color: #e5e7eb;
 }
 
 /* Main Search button */
 #searchBtn {
     background: #007bff;
     color: white;
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 999px;
     border: none;
     cursor: pointer;
     font-size: 15px;
+    font-weight: 600;
     white-space: nowrap;
+    transition: all 0.3s ease;
 }
 
 #searchBtn:hover {
-    background: #005ec4;
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+#searchBtn:active {
+    transform: translateY(0);
 }
 
 /* Minimal text-style GEO button BELOW the bar */
@@ -105,22 +158,25 @@ h1 {
     background: none;
     border: none;
     color: #28a745;
-    padding: 4px 8px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    white-space: nowrap;              /* keep on one line */
-    transition: background-color 0.2s ease, opacity 0.2s ease;
+    white-space: nowrap;
+    transition: all 0.2s ease;
 }
 
 /* green translucent background */
 #geoBtn:hover {
     background-color: rgba(40, 167, 69, 0.12);
+    transform: translateY(-1px);
 }
 
 /* Active click effect */
 #geoBtn:active {
     opacity: 0.7;
+    transform: translateY(0);
 }
 
 /* ----------------------------
@@ -130,11 +186,24 @@ h1 {
 #bigMap {
     display: none;
     width: 100%;
-    height: 400px;
-    margin-top: 20px;
-    border-radius: 12px;
+    height: 420px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
@@ -143,39 +212,381 @@ h1 {
 ----------------------------- */
 
 #results {
-    margin-top: 20px;
+    margin-top: 32px;
 }
 
 .restaurant-item {
     background: white;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.4s ease;
 }
 
 .restaurant-item h2 {
     margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 20px;
+    margin-bottom: 16px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
 }
 
 .restaurant-item p {
-    margin: 6px 0;
+    margin: 10px 0;
+    font-size: 15px;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.restaurant-item p strong {
+    font-weight: 600;
+    color: #1f2937;
 }
 
 /* "Open in Google Maps" link */
 .map-link {
     display: inline-block;
-    margin-top: 10px;
-    padding: 8px 12px;
+    margin-top: 16px;
+    padding: 10px 16px;
     background: #28a745;
     color: white;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .map-link:hover {
     background: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* ----------------------------
+   LOADING SPINNER
+----------------------------- */
+
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
+}
+
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #007bff;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner-overlay p {
+    color: white;
+    margin-top: 24px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+/* ----------------------------
+   KNN CONTROLS
+----------------------------- */
+
+#knnControls {
+    background: #fff;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    margin-top: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+#knnControls label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#kValue {
+    width: 70px;
+    padding: 6px 10px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+#kValue:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+/* ----------------------------
+   FILTERS SECTION
+----------------------------- */
+
+.filters-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    background: white;
+    padding: 20px 24px;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-top: 12px;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-item label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 600;
+}
+
+.filter-item input[type="range"] {
+    width: 160px;
+    cursor: pointer;
+    height: 6px;
+    accent-color: #007bff;
+}
+
+#clearFilters {
+    background: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: auto;
+    transition: all 0.3s ease;
+}
+
+#clearFilters:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+#clearFilters:active {
+    transform: translateY(0);
+}
+
+/* ----------------------------
+   MODAL
+----------------------------- */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+#modalBody h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #1a1a1a;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+#modalBody p {
+    margin: 14px 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4b5563;
+}
+
+#modalBody p strong {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+#modalBody .modal-section {
+    margin: 24px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: background 0.2s ease;
+}
+
+#modalBody .modal-section:hover {
+    background: #f1f3f5;
+}
+
+#modalBody .modal-section h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* ----------------------------
+   ENHANCED RESTAURANT CARDS
+----------------------------- */
+
+.restaurant-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restaurant-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.view-details-btn {
+    display: inline-block;
+    margin-top: 16px;
+    margin-right: 12px;
+    padding: 10px 16px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-details-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+.view-details-btn:active {
+    transform: translateY(0);
+}
+
+/* ----------------------------
+   ERROR MESSAGE
+----------------------------- */
+
+.error-message {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    color: #856404;
+    padding: 28px;
+    border-radius: 14px;
+    margin: 24px 0;
+    text-align: center;
+    font-size: 16px;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-message strong {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* ----------------------------
+   INFO MESSAGE
+----------------------------- */
+
+.info-message {
+    background: #d1ecf1;
+    border: 2px solid #17a2b8;
+    color: #0c5460;
+    padding: 28px;
+    border-radius: 14px;
+    margin: 24px 0;
+    text-align: center;
+    font-size: 16px;
+    animation: fadeIn 0.3s ease;
+}
+
+.info-message strong {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.info-message p {
+    margin: 8px 0 0 0;
+    font-size: 15px;
+    color: #0c5460;
 }

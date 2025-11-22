@@ -32,6 +32,11 @@ public class RestaurantService {
 
     private double[] geocodeZip(String postNummer) {
         try {
+            // Check if API key is set
+            if (API_KEY == null || API_KEY.isEmpty()) {
+                throw new RuntimeException("Google API Key is not configured. Please set GOOGLE_API_KEY environment variable.");
+            }
+
             RestTemplate rest = new RestTemplate();
 
             String address = postNummer + " Copenhagen Denmark";
@@ -44,19 +49,36 @@ public class RestaurantService {
             System.out.println("Geocode URL: " + url);
 
             String json = rest.getForObject(url, String.class);
+            System.out.println("Geocode response: " + json);
 
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode locNode = mapper.readTree(json)
-                    .path("results").get(0)
+            JsonNode root = mapper.readTree(json);
+
+            // Check API response status
+            String status = root.path("status").asText();
+            if (!"OK".equals(status)) {
+                throw new RuntimeException("Geocoding failed with status: " + status +
+                    ". This postal code may not exist or be valid for Copenhagen, Denmark.");
+            }
+
+            JsonNode results = root.path("results");
+            if (results.size() == 0) {
+                throw new RuntimeException("No results found for postal code: " + postNummer);
+            }
+
+            JsonNode locNode = results.get(0)
                     .path("geometry").path("location");
 
             double lat = locNode.path("lat").asDouble();
             double lng = locNode.path("lng").asDouble();
 
+            System.out.println("Geocoded to: lat=" + lat + ", lng=" + lng);
+
             return new double[]{lat, lng};
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to geocode ZIP " + postNummer, e);
+            System.err.println("Geocoding error for postal code " + postNummer + ": " + e.getMessage());
+            throw new RuntimeException("Failed to geocode postal code " + postNummer + ": " + e.getMessage(), e);
         }
     }
 
