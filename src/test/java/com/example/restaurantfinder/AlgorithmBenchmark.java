@@ -43,21 +43,46 @@ public class AlgorithmBenchmark {
         double userLat = BASE_LAT;
         double userLng = BASE_LNG;
 
+        System.out.println("\n--- JAVA BUILT-IN SORT (Timsort) ---");
+
+        // Benchmark: JavaSort with byPrice comparator
+        benchmarkJavaSort(testData, "Price",
+                AlgorithmPipeline.RestaurantComparators.byPrice());
+
+        // Benchmark: JavaSort with byRating comparator
+        benchmarkJavaSort(testData, "Rating",
+                AlgorithmPipeline.RestaurantComparators.byRating());
+
+        // Benchmark: JavaSort with byDistance comparator
+        benchmarkJavaSort(testData, "Distance",
+                AlgorithmPipeline.RestaurantComparators.byDistance(userLat, userLng));
+
+        // Benchmark: JavaSort with weighted comparator
+        benchmarkJavaSort(testData, "Weighted",
+                AlgorithmPipeline.RestaurantComparators.weighted(userLat, userLng));
+
+        System.out.println("\n--- CUSTOM MERGE SORT ---");
+
         // Benchmark: MergeSort with byPrice comparator
         benchmarkMergeSort(testData, "Price",
-            AlgorithmPipeline.RestaurantComparators.byPrice());
+                AlgorithmPipeline.RestaurantComparators.byPrice());
 
         // Benchmark: MergeSort with byRating comparator
         benchmarkMergeSort(testData, "Rating",
-            AlgorithmPipeline.RestaurantComparators.byRating());
+                AlgorithmPipeline.RestaurantComparators.byRating());
 
         // Benchmark: MergeSort with byDistance comparator
         benchmarkMergeSort(testData, "Distance",
-            AlgorithmPipeline.RestaurantComparators.byDistance(userLat, userLng));
+                AlgorithmPipeline.RestaurantComparators.byDistance(userLat, userLng));
 
         // Benchmark: MergeSort with weighted comparator
         benchmarkMergeSort(testData, "Weighted",
-            AlgorithmPipeline.RestaurantComparators.weighted(userLat, userLng));
+                AlgorithmPipeline.RestaurantComparators.weighted(userLat, userLng));
+
+        System.out.println("\n--- SORTING COMPARISON ---");
+        benchmarkSortComparison(testData);
+
+        System.out.println("\n--- K-NEAREST NEIGHBOR ---");
 
         // Benchmark: KNN with different k values
         int[] kValues = {5, 10, 20, Math.min(50, testData.size() / 2)};
@@ -67,13 +92,39 @@ public class AlgorithmBenchmark {
             }
         }
 
+        System.out.println("\n--- DISTANCE CALCULATIONS ---");
+
         // Benchmark: Distance calculations
         benchmarkDistanceCalculations(testData, userLat, userLng);
     }
 
-    private static void benchmarkMergeSort(List<RestaurantDto> data,
+    private static void benchmarkJavaSort(List<RestaurantDto> data,
                                           String comparatorName,
                                           java.util.Comparator<RestaurantDto> comparator) {
+        // Warm-up
+        for (int i = 0; i < 3; i++) {
+            AlgorithmPipeline.JavaSort.sort(data, comparator);
+        }
+
+        // Benchmark
+        int iterations = 10;
+        long totalTime = 0;
+
+        for (int i = 0; i < iterations; i++) {
+            long start = System.nanoTime();
+            AlgorithmPipeline.JavaSort.sort(data, comparator);
+            long end = System.nanoTime();
+            totalTime += (end - start);
+        }
+
+        double avgTimeMs = (totalTime / iterations) / 1_000_000.0;
+        System.out.printf("  JavaSort  (%-10s): %8.3f ms (avg of %d runs)%n",
+                comparatorName, avgTimeMs, iterations);
+    }
+
+    private static void benchmarkMergeSort(List<RestaurantDto> data,
+                                           String comparatorName,
+                                           java.util.Comparator<RestaurantDto> comparator) {
         // Warm-up
         for (int i = 0; i < 3; i++) {
             AlgorithmPipeline.MergeSort.sort(data, comparator);
@@ -92,13 +143,81 @@ public class AlgorithmBenchmark {
 
         double avgTimeMs = (totalTime / iterations) / 1_000_000.0;
         System.out.printf("  MergeSort (%-10s): %8.3f ms (avg of %d runs)%n",
-            comparatorName, avgTimeMs, iterations);
+                comparatorName, avgTimeMs, iterations);
+    }
+
+    private static void benchmarkSortComparison(List<RestaurantDto> data) {
+        double userLat = BASE_LAT;
+        double userLng = BASE_LNG;
+
+        // Test all comparators
+        java.util.Comparator<RestaurantDto>[] comparators = new java.util.Comparator[]{
+                AlgorithmPipeline.RestaurantComparators.byRating(),
+                AlgorithmPipeline.RestaurantComparators.byPrice(),
+                AlgorithmPipeline.RestaurantComparators.byDistance(userLat, userLng),
+                AlgorithmPipeline.RestaurantComparators.weighted(userLat, userLng)
+        };
+        String[] names = {"Rating", "Price", "Distance", "Weighted"};
+
+        long javaSortTotal = 0;
+        long mergeSortTotal = 0;
+        int iterations = 10;
+
+        for (int idx = 0; idx < comparators.length; idx++) {
+            java.util.Comparator<RestaurantDto> comp = comparators[idx];
+
+            // Warm-up
+            for (int i = 0; i < 3; i++) {
+                AlgorithmPipeline.JavaSort.sort(data, comp);
+                AlgorithmPipeline.MergeSort.sort(data, comp);
+            }
+
+            // Benchmark JavaSort
+            long javaStart = System.nanoTime();
+            for (int i = 0; i < iterations; i++) {
+                AlgorithmPipeline.JavaSort.sort(data, comp);
+            }
+            long javaEnd = System.nanoTime();
+            long javaTime = javaEnd - javaStart;
+
+            // Benchmark MergeSort
+            long mergeStart = System.nanoTime();
+            for (int i = 0; i < iterations; i++) {
+                AlgorithmPipeline.MergeSort.sort(data, comp);
+            }
+            long mergeEnd = System.nanoTime();
+            long mergeTime = mergeEnd - mergeStart;
+
+            javaSortTotal += javaTime;
+            mergeSortTotal += mergeTime;
+
+            double javaAvg = (javaTime / iterations) / 1_000_000.0;
+            double mergeAvg = (mergeTime / iterations) / 1_000_000.0;
+            double speedup = mergeAvg / javaAvg;
+
+            System.out.printf("  %-10s: JavaSort=%6.3f ms | MergeSort=%6.3f ms | Speedup: %.2fx%n",
+                    names[idx], javaAvg, mergeAvg, speedup);
+        }
+
+        double javaTotalMs = javaSortTotal / 1_000_000.0;
+        double mergeTotalMs = mergeSortTotal / 1_000_000.0;
+        double overallSpeedup = mergeTotalMs / javaTotalMs;
+
+        System.out.println("  " + "-".repeat(70));
+        System.out.printf("  TOTAL      : JavaSort=%6.3f ms | MergeSort=%6.3f ms | Speedup: %.2fx%n",
+                javaTotalMs, mergeTotalMs, overallSpeedup);
+
+        if (overallSpeedup > 1.0) {
+            System.out.printf("  >> JavaSort (Timsort) is %.2fx FASTER overall%n", overallSpeedup);
+        } else {
+            System.out.printf("  >> MergeSort is %.2fx FASTER overall%n", 1.0 / overallSpeedup);
+        }
     }
 
     private static void benchmarkKNN(List<RestaurantDto> data,
-                                    double userLat,
-                                    double userLng,
-                                    int k) {
+                                     double userLat,
+                                     double userLng,
+                                     int k) {
         // Warm-up
         for (int i = 0; i < 3; i++) {
             AlgorithmPipeline.kNearest(data, userLat, userLng, k);
@@ -117,12 +236,12 @@ public class AlgorithmBenchmark {
 
         double avgTimeMs = (totalTime / iterations) / 1_000_000.0;
         System.out.printf("  KNN (k=%-4d)        : %8.3f ms (avg of %d runs)%n",
-            k, avgTimeMs, iterations);
+                k, avgTimeMs, iterations);
     }
 
     private static void benchmarkDistanceCalculations(List<RestaurantDto> data,
-                                                     double userLat,
-                                                     double userLng) {
+                                                      double userLat,
+                                                      double userLng) {
         int operations = data.size() * 100;
 
         // Benchmark: fastDistance
@@ -144,19 +263,19 @@ public class AlgorithmBenchmark {
         double normalTimeMs = (end - start) / 1_000_000.0;
 
         System.out.printf("  Distance (fast)    : %8.3f ms (%d operations)%n",
-            fastTimeMs, operations);
+                fastTimeMs, operations);
         System.out.printf("  Distance (normal)  : %8.3f ms (%d operations)%n",
-            normalTimeMs, operations);
+                normalTimeMs, operations);
         System.out.printf("  Speedup factor     : %.2fx faster without sqrt%n",
-            normalTimeMs / fastTimeMs);
+                normalTimeMs / fastTimeMs);
     }
 
     private static List<RestaurantDto> generateTestData(int count) {
         List<RestaurantDto> restaurants = new ArrayList<>();
         String[] names = {
-            "Pizza Place", "Sushi Bar", "Burger Joint", "Taco Stand",
-            "Italian Bistro", "French Cafe", "Thai Restaurant", "Chinese Wok",
-            "Indian Curry House", "Greek Taverna", "Mexican Cantina", "Steakhouse"
+                "Pizza Place", "Sushi Bar", "Burger Joint", "Taco Stand",
+                "Italian Bistro", "French Cafe", "Thai Restaurant", "Chinese Wok",
+                "Indian Curry House", "Greek Taverna", "Mexican Cantina", "Steakhouse"
         };
 
         for (int i = 0; i < count; i++) {
@@ -198,7 +317,7 @@ public class AlgorithmBenchmark {
                 long start = System.nanoTime();
                 for (int i = 0; i < 5; i++) {
                     AlgorithmPipeline.MergeSort.sort(data,
-                        AlgorithmPipeline.RestaurantComparators.byRating());
+                            AlgorithmPipeline.RestaurantComparators.byRating());
                 }
                 long end = System.nanoTime();
 
@@ -210,7 +329,7 @@ public class AlgorithmBenchmark {
                     double expectedRatio = (size * Math.log(size)) / (prevSize * Math.log(prevSize));
 
                     System.out.printf("%d\t%.3f\t\t%.2f\t%.2f%n",
-                        size, avgTime, actualRatio, expectedRatio);
+                            size, avgTime, actualRatio, expectedRatio);
                 } else {
                     System.out.printf("%d\t%.3f\t\t-\t-%n", size, avgTime);
                 }
@@ -244,7 +363,7 @@ public class AlgorithmBenchmark {
                     double expectedRatio = (size * Math.log(k)) / (prevSize * Math.log(k));
 
                     System.out.printf("%d\t%.3f\t\t%.2f\t%.2f%n",
-                        size, avgTime, actualRatio, expectedRatio);
+                            size, avgTime, actualRatio, expectedRatio);
                 } else {
                     System.out.printf("%d\t%.3f\t\t-\t-%n", size, avgTime);
                 }
@@ -278,7 +397,7 @@ public class AlgorithmBenchmark {
 
                 long memBefore = runtime.totalMemory() - runtime.freeMemory();
                 List<RestaurantDto> sorted = AlgorithmPipeline.MergeSort.sort(data,
-                    AlgorithmPipeline.RestaurantComparators.byRating());
+                        AlgorithmPipeline.RestaurantComparators.byRating());
                 long memAfter = runtime.totalMemory() - runtime.freeMemory();
                 long mergeSortMem = (memAfter - memBefore) / 1024;
 
@@ -292,7 +411,7 @@ public class AlgorithmBenchmark {
                 long originalSize = (data.size() * 100) / 1024;
 
                 System.out.printf("%d\t%d\t\t%d\t\t%d%n",
-                    size, mergeSortMem, knnMem, originalSize);
+                        size, mergeSortMem, knnMem, originalSize);
             }
         }
     }

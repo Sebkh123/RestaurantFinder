@@ -56,6 +56,18 @@ public class AlgorithmPipeline {
         }
     }
 
+
+    // ---------------------------
+    // Java Built-in Sort (Timsort wrapper)
+    // ---------------------------
+    public static class JavaSort {
+        public static List<RestaurantDto> sort(List<RestaurantDto> list, Comparator<RestaurantDto> comparator) {
+            List<RestaurantDto> result = new ArrayList<>(list);
+            result.sort(comparator);
+            return result;
+        }
+    }
+
     // ---------------------------
     // Merge Sort
     // ---------------------------
@@ -94,6 +106,8 @@ public class AlgorithmPipeline {
             return result;
         }
     }
+
+
 
     // ---------------------------
     // K-Nearest Neighbor (KNN)
