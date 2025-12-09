@@ -75,9 +75,7 @@ public class AlgorithmPipeline {
 
         public static List<RestaurantDto> sort(List<RestaurantDto> list, Comparator<RestaurantDto> comparator) {
             if (list.size() <= 1) return new ArrayList<>(list);
-
             int mid = list.size() / 2;
-
             List<RestaurantDto> left = sort(list.subList(0, mid), comparator);
             List<RestaurantDto> right = sort(list.subList(mid, list.size()), comparator);
 
@@ -88,10 +86,8 @@ public class AlgorithmPipeline {
                 List<RestaurantDto> left,
                 List<RestaurantDto> right,
                 Comparator<RestaurantDto> comparator) {
-
             List<RestaurantDto> result = new ArrayList<>();
             int i = 0, j = 0;
-
             while (i < left.size() && j < right.size()) {
                 if (comparator.compare(left.get(i), right.get(j)) <= 0) {
                     result.add(left.get(i++));
