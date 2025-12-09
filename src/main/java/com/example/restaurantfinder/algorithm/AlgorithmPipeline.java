@@ -83,8 +83,7 @@ public class AlgorithmPipeline {
         }
 
         private static List<RestaurantDto> merge(
-                List<RestaurantDto> left,
-                List<RestaurantDto> right,
+                List<RestaurantDto> left, List<RestaurantDto> right,
                 Comparator<RestaurantDto> comparator) {
             List<RestaurantDto> result = new ArrayList<>();
             int i = 0, j = 0;
